@@ -6,12 +6,12 @@ public sealed class Day8 : IDay
 
     public async Task SolvePart1()
     {
-        var data = await ParseAsync(FileName);
-        
+        var data = await File.ReadAllLinesAsync(FileName);
+
         var countVisible = 0;
 
-        var rowCount = data.Count;
-        var colCount = data[0].Count;
+        var rowCount = data.Length;
+        var colCount = data[0].Length;
 
         for (var row = 0; row < rowCount; row++)
         {
@@ -96,11 +96,11 @@ public sealed class Day8 : IDay
 
     public async Task SolvePart2()
     {
-        var data = await ParseAsync(FileName);
+        var data = await File.ReadAllLinesAsync(FileName);
         var maxScenicScore = 0;
 
-        var rowCount = data.Count;
-        var colCount = data[0].Count;
+        var rowCount = data.Length;
+        var colCount = data[0].Length;
 
         for (var row = 0; row < rowCount; row++)
         {
@@ -119,7 +119,7 @@ public sealed class Day8 : IDay
         Console.WriteLine(maxScenicScore);
     }
 
-    private static int GetLeftDistance(IList<IList<int>> data, int row, int col)
+    private static int GetLeftDistance(IList<string> data, int row, int col)
     {
         var distanceLeft = 0;
         var current = data[row][col];
@@ -137,11 +137,11 @@ public sealed class Day8 : IDay
         return distanceLeft;
     }
 
-    private static int GetRightDistance(IList<IList<int>> data, int row, int col)
+    private static int GetRightDistance(IList<string> data, int row, int col)
     {
         var distanceRight = 0;
         var current = data[row][col];
-        var colCount = data[row].Count;
+        var colCount = data[row].Length;
 
         for (var j = col + 1; j < colCount; j++)
         {
@@ -156,7 +156,7 @@ public sealed class Day8 : IDay
         return distanceRight;
     }
 
-    private static int GetTopDistance(IList<IList<int>> data, int row, int col)
+    private static int GetTopDistance(IList<string> data, int row, int col)
     {
         var distanceTop = 0;
         var current = data[row][col];
@@ -174,7 +174,7 @@ public sealed class Day8 : IDay
         return distanceTop;
     }
 
-    private static int GetBottomDistance(IList<IList<int>> data, int row, int col)
+    private static int GetBottomDistance(IList<string> data, int row, int col)
     {
         var distance = 0;
         var current = data[row][col];
@@ -191,23 +191,5 @@ public sealed class Day8 : IDay
         }
 
         return distance;
-    }
-
-    private static async Task<IList<IList<int>>> ParseAsync(string path)
-    {
-        var lines = FileReader.GetAllLinesAsync(path);
-
-        var rows = new List<IList<int>>();
-
-        await foreach (var line in lines)
-        {
-            var row = line
-                .Select(x => x - '0')
-                .ToArray();
-
-            rows.Add(row);
-        }
-
-        return rows;
     }
 }
