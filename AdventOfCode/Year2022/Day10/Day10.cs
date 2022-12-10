@@ -60,7 +60,7 @@ internal sealed class Day10 : IDay
     {
         const int width = 40;
         const int height = 6;
-        var pixels = Enumerable.Repeat('.', width * height).ToArray();
+        var pixels = Enumerable.Repeat(' ', width * height).ToArray();
 
         using var streamReader = new StreamReader(FileName);
         var line = await streamReader.ReadLineAsync();
@@ -101,7 +101,7 @@ internal sealed class Day10 : IDay
             var col = pixel % 40;
             if (col >= x - 1 && col <= x + 1)
             {
-                pixels[pixel] = '#';
+                pixels[pixel] = '█';
             }
 
             i++;
