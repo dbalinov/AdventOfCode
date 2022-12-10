@@ -47,7 +47,7 @@ public sealed class Day7 : IDay
 
     private static async Task<TreeNode> ParseTreeAsync(string path)
     {
-        var lines = FileReader.GetAllLinesAsync(path);
+        var lines = File.ReadLinesAsync(path);
 
         var root = new TreeNode();
         var currentNode = root;
