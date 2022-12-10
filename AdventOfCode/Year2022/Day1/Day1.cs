@@ -12,7 +12,7 @@ public class Day1 : IDay
         var maxCalories = 0;
         var currentCalories = 0;
 
-        var lines = FileReader.GetAllLinesAsync(FileName);
+        var lines = File.ReadLinesAsync(FileName);
         await foreach (var line in lines)
         {
             if (line == string.Empty)
@@ -41,7 +41,7 @@ public class Day1 : IDay
 
         var currentCalories = 0;
 
-        var lines = FileReader.GetAllLinesAsync(FileName);
+        var lines = File.ReadLinesAsync(FileName);
 
         // Append empty string to handle the last group of calories
         lines = AppendEmptyString(lines);
