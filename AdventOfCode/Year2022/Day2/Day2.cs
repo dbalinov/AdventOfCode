@@ -74,7 +74,8 @@ internal sealed class Day2 : IDay
             {
                 'A' => 'Z', // Rock => Scissors
                 'B' => 'X', // Paper => Rock
-                'C' => 'Y' // Scissors => paper
+                'C' => 'Y', // Scissors => paper
+                _ => p1
             };
         }
 
@@ -83,7 +84,8 @@ internal sealed class Day2 : IDay
         {
             'A' => 'Y', // Rock => Paper
             'B' => 'Z', // Paper => Scissors
-            'C' => 'X' // Scissors => Rock
+            'C' => 'X', // Scissors => Rock
+            _ => p1
         };
     }
 }
