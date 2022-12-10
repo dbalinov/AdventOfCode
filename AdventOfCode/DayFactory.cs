@@ -5,6 +5,7 @@ using AdventOfCode.Year2022.Day7;
 using AdventOfCode.Year2022.Day8;
 using AdventOfCode.Year2022.Day9;
 using AdventOfCode.Year2022.Day10;
+using AdventOfCode.Year2022.Day2;
 
 namespace AdventOfCode;
 
@@ -14,6 +15,7 @@ internal class DayFactory
         => day switch
         {
             1 => new Day1(),
+            2 => new Day2(),
             4 => new Day4(),
             6 => new Day6(),
             7 => new Day7(),
