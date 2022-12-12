@@ -24,7 +24,8 @@ internal sealed class Day12 : IDay
             }
         }
 
-        var shortestPath = GetShortestPath(lines, start, end);
+        var getShortestPath = GetShortestPathFunc(lines, end);
+        var shortestPath = getShortestPath(start);
  
         Console.WriteLine(shortestPath);
     }
@@ -46,14 +47,16 @@ internal sealed class Day12 : IDay
             }
         }
 
-        var minShortestPath = starts
-            .Select(start => GetShortestPath(lines, start, end))
+        var getShortestPath = GetShortestPathFunc(lines, end);
+
+        var shortestPath = starts
+            .Select(start => getShortestPath(start))
             .Min();
 
-        Console.WriteLine(minShortestPath);
+        Console.WriteLine(shortestPath);
     }
 
-    public static int GetShortestPath(string[] lines, Location start, Location end)
+    public static Func<Location, int> GetShortestPathFunc(string[] lines, Location end)
     {
         var previous = new Dictionary<Location, Location>();
 
@@ -84,15 +87,20 @@ internal sealed class Day12 : IDay
             }
         }
 
-        var length = 0;
-        var current = start;
-        while (!current.Equals(end))
-        {
-            length++;
-            previous.TryGetValue(current, out current);
+        Func<Location, int> shortestPathFn = v => {
+            var length = 0;
+
+            var current = v;
+            while (!current.Equals(end))
+            {
+                length++;
+                previous.TryGetValue(current, out current);
+            };
+            
+            return length;
         };
 
-        return length;
+        return shortestPathFn;
     }
 
     private static IEnumerable<Location> GetNextLocations(Location l) => new List<Location>
