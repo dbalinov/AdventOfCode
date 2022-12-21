@@ -1,8 +1,13 @@
-﻿namespace AdventOfCode.Year2022.Day18;
+﻿using AdventOfCode.Year2022.Day9;
 
+namespace AdventOfCode.Year2022.Day18;
+
+/// <summary>
+/// Boiling Boulders
+/// </summary>
 internal sealed class Day18 : IDay
 {
-    private const string FileName = "Year2022/Day18/test-input.txt";
+    private const string FileName = "Year2022/Day18/input.txt";
 
     private static readonly IReadOnlyList<Point3D> Adjacencies = new Point3D[]
     {
@@ -46,6 +51,57 @@ internal sealed class Day18 : IDay
     
     public async Task SolvePart2()
     {
+        var lines = File.ReadLinesAsync(FileName);
+
+        var points = await GetPointsAsync(lines);
+
+        var minX = points.Select(p => p.X).Min() - 1;
+        var maxX = points.Select(p => p.X).Max() + 1;
+        var minY = points.Select(p => p.Y).Min() - 1;
+        var maxY = points.Select(p => p.Y).Max() + 1;
+        var minZ = points.Select(p => p.Z).Min() - 1;
+        var maxZ = points.Select(p => p.Z).Max() + 1;
+
+        var start = new Point3D(minX, minY, minZ);
+
+        var allVisibleSides = 0;
+
+        // BFS
+        var visited = new HashSet<Point3D>();
+        var queue = new Queue<Point3D>();
+        
+        visited.Add(start);
+        queue.Enqueue(start);
+
+        while (queue.Any())
+        {
+            start = queue.First();
+            queue.Dequeue();
+
+            if (start.X < minX || start.X > maxX ||
+                start.Y < minY || start.Y > maxY ||
+                start.Z < minZ || start.Z > maxZ)
+            {
+                continue;
+            }
+
+            foreach (var adjacency in Adjacencies)
+            {
+                var p = start + adjacency;
+                
+                if (points.Contains(p))
+                {
+                    allVisibleSides++;
+                }
+                else if (!visited.Contains(p))
+                {
+                    visited.Add(p);
+                    queue.Enqueue(p);
+                }
+            }
+        }
+
+        Console.Write(allVisibleSides);
     }
 
     private static async Task<IList<Point3D>> GetPointsAsync(IAsyncEnumerable<string> lines)
