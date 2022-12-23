@@ -114,7 +114,7 @@ internal sealed class Day23 : IDay
     {
         var newPositions = new HashSet<Elf>();
 
-        var proposals = new Dictionary<Elf, Elf>();
+        var proposals = new Dictionary<Elf, IList<Elf>>();
 
         foreach (var elf in oldPositions)
         {
@@ -131,7 +131,14 @@ internal sealed class Day23 : IDay
             if (canMove.All(x => x) || canMove.All(x => !x))
             {
                 newPositions.Add(elf);
-                proposals.Add(elf, elf);
+
+                if (!proposals.ContainsKey(elf))
+                {
+                    proposals[elf] = new List<Elf>();
+                }
+
+                proposals[elf].Add(elf);
+
                 continue;
             }
 
@@ -141,7 +148,14 @@ internal sealed class Day23 : IDay
                 if (canMove[i])
                 {
                     var direction = strategy[1];
-                    proposals.Add(elf, elf + direction);
+                    var newPosition = elf + direction;
+
+                    if (!proposals.ContainsKey(newPosition))
+                    {
+                        proposals[newPosition] = new List<Elf>();
+                    }
+
+                    proposals[newPosition].Add(elf);
                     break;
                 }
 
@@ -149,14 +163,19 @@ internal sealed class Day23 : IDay
             }
         }
 
-        var proposedValues = proposals.Values;
-        foreach (var (oldElf, newElf) in proposals)
+        foreach (var (newElf, oldElves) in proposals)
         {
-            var elf = proposedValues.Count(x => x == newElf) > 1
-                ? oldElf
-                : newElf;
-
-            newPositions.Add(elf);
+            if (oldElves.Count > 1)
+            {
+                foreach (var oldElf in oldElves)
+                {
+                    newPositions.Add(oldElf);
+                }
+            }
+            else
+            {
+                newPositions.Add(newElf);
+            }
         }
 
         return newPositions;
