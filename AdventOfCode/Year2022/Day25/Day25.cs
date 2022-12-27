@@ -4,6 +4,8 @@ internal class Day25 : IDay
 {
     private const string FileName = "Year2022/Day25/input.txt";
 
+    public Day25() => Console.Title = "Full of Hot Air";
+
     public async Task SolvePart1()
     {
         var lines = File.ReadLinesAsync(FileName);
@@ -20,9 +22,7 @@ internal class Day25 : IDay
     }
 
     public Task SolvePart2()
-    {
-        return Task.CompletedTask;
-    }
+        => Task.CompletedTask;
 
     private static long ParseSnafu(string line)
     {
@@ -50,80 +50,25 @@ internal class Day25 : IDay
 
     private static string SnafuToString(long number)
     {
-        var n = number;
+        var chars = new List<char>();
+        for (; number > 0; number /= 5) {
+            number += 2;
 
-        var digits = new List<long>();
-        var i = 0;
-        while (n > 0)
-        {
-            var remainder = n % 5;
-
-            n /= 5;
-
-            switch (remainder)
+            var ch = (number % 5 - 2) switch
             {
-                case >= 0 and <= 2:
-                {
-                    Add(digits, i, remainder);
-                    break;
-                }
-                case 3:
-                {
-                    Add(digits, i, -2);
-                    Add(digits, i + 1, 1);
-                    break;
-                }
-                case 4:
-                {
-                    Add(digits, i, -1);
-                    Add(digits, i + 1, 1);
-                    break;
-                }
-            }
-
-            i++;
-        }
-
-        // Normalize
-        while (digits.Any(x => x == 3))
-        {
-            for (var j = 0; j < digits.Count; j++)
-            {
-                if (digits[j] != 3)
-                {
-                    continue;
-                }
-
-                digits[j] = -2;
-                Add(digits, j + 1, 1);
-            }
-        }
-
-        digits.Reverse();
-
-        var chars = digits
-            .Select(digit => digit switch
-            {
-                >= 0 and <= 2 => (char) ('0' + digit),
+                0 => '0',
+                1 => '1',
                 -1 => '-',
+                2 => '2',
                 -2 => '=',
-                _ => throw new NotSupportedException($"Invalid char {digit}")
-            });
+                _ => throw new NotSupportedException("Invalid char")
+            };
 
-        var toString = string.Join(string.Empty, chars);
+            chars.Add(ch);
+        }
 
-        return toString;
-    }
-    
-    private static void Add(IList<long> digits, int index, long value)
-    {
-        if (digits.Count == index)
-        {
-            digits.Add(value);
-        }
-        else
-        {
-            digits[index] += value;
-        }
+        chars.Reverse();
+
+        return string.Join(string.Empty, chars);
     }
 }
