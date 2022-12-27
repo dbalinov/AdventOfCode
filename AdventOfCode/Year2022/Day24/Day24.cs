@@ -77,10 +77,16 @@ internal sealed class Day24 : IDay
         return current.G - 1;
     }
 
+    private static List<HashSet<Location>>? _blizzardsForMinutes = null;
     private static List<HashSet<Location>> GetBlizzardsForMinutes(int maxRow, int maxCol, IList<Blizzard> blizzards)
     {
+        if (_blizzardsForMinutes != null)
+        {
+            return _blizzardsForMinutes;
+        }
+
         var matricesLength = (maxRow - 1) * (maxCol - 1);
-        var blizzardsForMinutes = new List<HashSet<Location>>();
+        _blizzardsForMinutes = new List<HashSet<Location>>();
 
         for (var g = 1; g <= matricesLength; g++)
         {
@@ -93,10 +99,11 @@ internal sealed class Day24 : IDay
                 blizzard.Move(maxRow, maxCol);
             }
 
-            blizzardsForMinutes.Add(blizzardsForMinute);
+            _blizzardsForMinutes.Add(blizzardsForMinute);
         }
 
-        return blizzardsForMinutes;
+         
+        return _blizzardsForMinutes;
     }
 
     private static IList<Blizzard> Parse(IList<string> lines)
