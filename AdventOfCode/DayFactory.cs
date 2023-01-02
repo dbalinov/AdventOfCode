@@ -2,6 +2,6 @@
 
 internal partial class DayFactory
 {
-    public IDay Create(int day)
-        => GeneratedMethod(day);
+    public IDay Create(int year, int day)
+        => GeneratedMethod(year, day);
 }
