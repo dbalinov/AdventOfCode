@@ -10,7 +10,7 @@ internal sealed class Day1 : IDay
     {
         var lines = File.ReadLinesAsync(FileName);
 
-        var sum = 0d;
+        var sum = 0;
         await foreach (var line in lines)
         {
             var mass = int.Parse(line);
@@ -27,10 +27,10 @@ internal sealed class Day1 : IDay
     {
         var lines = File.ReadLinesAsync(FileName);
 
-        var sum = 0d;
+        var sum = 0;
         await foreach (var line in lines)
         {
-            var mass = double.Parse(line);
+            var mass = int.Parse(line);
             var fuel = mass;
 
             while ((fuel = CalculateFuel(fuel)) > 0)
@@ -42,6 +42,6 @@ internal sealed class Day1 : IDay
         Console.WriteLine(sum);
     }
 
-    private static double CalculateFuel(double mass)
-        => Math.Floor(mass / 3.0) - 2;
+    private static int CalculateFuel(int mass)
+        => mass / 3 - 2;
 }
