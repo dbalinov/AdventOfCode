@@ -4,6 +4,8 @@ internal sealed class Day4 : IDay
 {
     private const string FileName = "Year2022/Day4/input.txt";
 
+    public string Name => "Camp Cleanup";
+
     public async Task SolvePart1()
     {
         var count = 0;

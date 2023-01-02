@@ -6,6 +6,8 @@ internal class Day13 : IDay, IComparer<IList>
 {
     private const string FileName = "Year2022/Day13/input.txt";
 
+    public string Name => "Distress Signal";
+
     public async Task SolvePart1()
     {
         var lines = File.ReadLinesAsync(FileName);

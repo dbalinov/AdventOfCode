@@ -7,6 +7,8 @@ public sealed class Day7 : IDay
 {
     private const string FileName = "Year2022/Day7/input.txt";
 
+    public string Name => "No Space Left On Device";
+
     public async Task SolvePart1()
     {
         var root = await ParseTreeAsync(FileName);

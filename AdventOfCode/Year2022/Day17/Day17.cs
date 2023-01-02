@@ -9,6 +9,8 @@ internal class Day17 : IDay
     private const char Left = '<';
     private const char Right = '>';
 
+    public string Name => "Pyroclastic Flow";
+
     public async Task SolvePart1()
     {
         var input = await File.ReadAllTextAsync(FileName);

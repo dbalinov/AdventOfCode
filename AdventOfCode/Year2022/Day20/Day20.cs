@@ -4,6 +4,8 @@ internal sealed class Day20 : IDay
 {
     private const string FileName = "Year2022/Day20/input.txt";
 
+    public string Name => "Grove Positioning System";
+
     public async Task SolvePart1()
     {
         var lines = File.ReadLinesAsync(FileName);

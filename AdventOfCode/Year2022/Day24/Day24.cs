@@ -4,7 +4,7 @@ internal sealed class Day24 : IDay
 {
     private const string FileName = "Year2022/Day24/input.txt";
 
-    public Day24() => Console.Title = "Blizzard Basin";
+    public string Name => "Blizzard Basin";
 
     public async Task SolvePart1()
     {

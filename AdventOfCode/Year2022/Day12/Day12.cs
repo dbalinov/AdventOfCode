@@ -6,7 +6,9 @@ internal sealed class Day12 : IDay
 
     private const char StartSymbol = 'S';
     private const char EndSymbol = 'E';
-    
+
+    public string Name => "Hill Climbing Algorithm";
+
     public async Task SolvePart1()
     {
         var lines = await File.ReadAllLinesAsync(FileName);

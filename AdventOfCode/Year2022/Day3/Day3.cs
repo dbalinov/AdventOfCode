@@ -4,6 +4,8 @@ internal sealed class Day3 : IDay
 {
     private const string FileName = "Year2022/Day3/input.txt";
 
+    public string Name => "Rucksack Reorganization";
+
     public async Task SolvePart1()
     {
         var lines = File.ReadLinesAsync(FileName);

@@ -4,6 +4,8 @@ public sealed class Day22 : IDay
 {
     private const string FileName = "Year2022/Day22/input.txt";
 
+    public string Name => "Monkey Map";
+
     public async Task SolvePart1()
     {
         var lines = await File.ReadAllLinesAsync(FileName);

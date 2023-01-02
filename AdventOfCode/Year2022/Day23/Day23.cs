@@ -32,6 +32,8 @@ internal sealed class Day23 : IDay
         new(1, 1)
     };
 
+    public string Name => "Unstable Diffusion";
+
     public async Task SolvePart1()
     {
         var lines = File.ReadLinesAsync(FileName);

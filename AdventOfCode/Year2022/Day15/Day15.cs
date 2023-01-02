@@ -1,11 +1,10 @@
 ﻿namespace AdventOfCode.Year2022.Day15;
 
-/// <summary>
-/// Beacon Exclusion Zone
-/// </summary>
 internal sealed class Day15 : IDay
 {
     private const string FileName = "Year2022/Day15/input.txt";
+
+    public string Name => "Beacon Exclusion Zone";
 
     public async Task SolvePart1()
     {

@@ -16,6 +16,8 @@ internal sealed class Day2 : IDay
         {'Z', 3}  // Scissors
     };
 
+    public string Name => "Rock Paper Scissors";
+
     public async Task SolvePart1()
     {
         var score = 0;

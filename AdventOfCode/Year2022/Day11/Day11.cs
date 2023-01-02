@@ -4,6 +4,8 @@ internal sealed class Day11 : IDay
 {
     private const string FileName = "Year2022/Day11/input.txt";
 
+    public string Name => "Monkey in the Middle";
+
     public async Task SolvePart1()
     {
         var (items, operations, arguments, modules, trueReceivers, falseReceivers) = await ParseAsync(FileName);

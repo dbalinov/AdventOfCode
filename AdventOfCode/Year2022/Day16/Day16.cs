@@ -1,12 +1,11 @@
 ﻿namespace AdventOfCode.Year2022.Day16;
 
-/// <summary>
-/// Proboscidea Volcanium
-/// </summary>
 internal sealed class Day16 : IDay
 {
     private const string FileName = "Year2022/Day16/input.txt";
     private const string StartValve = "AA";
+
+    public string Name => "Proboscidea Volcanium";
 
     public async Task SolvePart1()
     {

@@ -7,6 +7,8 @@ public class Day1 : IDay
 {
     private const string FileName = "Year2022/Day1/input.txt";
 
+    public string Name => "Calorie Counting";
+
     public async Task SolvePart1()
     {
         var maxCalories = 0;

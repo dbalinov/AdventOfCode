@@ -9,6 +9,8 @@ internal sealed class Day21 : IDay
     private const string RootNode = "root";
     private const string HumanNode = "humn";
 
+    public string Name => "Monkey Math";
+
     public async Task SolvePart1()
     {
         var lines = File.ReadLinesAsync(FileName);

@@ -1,11 +1,10 @@
 ﻿namespace AdventOfCode.Year2022.Day14;
 
-/// <summary>
-/// Regolith Reservoir
-/// </summary>
 internal sealed class Day14 : IDay
 {
     private const string FileName = "Year2022/Day14/input.txt";
+
+    public string Name => "Regolith Reservoir";
 
     public async Task SolvePart1()
     {

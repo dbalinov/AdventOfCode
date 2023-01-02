@@ -4,6 +4,8 @@ internal sealed class Day10 : IDay
 {
     private const string FileName = "Year2022/Day10/input.txt";
 
+    public string Name => "Cathode-Ray Tube";
+
     public async Task SolvePart1()
     {
         using var streamReader = new StreamReader(FileName);

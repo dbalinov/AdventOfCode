@@ -1,10 +1,5 @@
-﻿using AdventOfCode.Year2022.Day9;
+﻿namespace AdventOfCode.Year2022.Day18;
 
-namespace AdventOfCode.Year2022.Day18;
-
-/// <summary>
-/// Boiling Boulders
-/// </summary>
 internal sealed class Day18 : IDay
 {
     private const string FileName = "Year2022/Day18/input.txt";
@@ -18,6 +13,8 @@ internal sealed class Day18 : IDay
         new(0, 0, 1),
         new(0, 0, -1),
     };
+
+    public string Name => "Boiling Boulders";
 
     public async Task SolvePart1()
     {

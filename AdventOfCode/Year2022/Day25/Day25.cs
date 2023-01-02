@@ -4,7 +4,7 @@ internal class Day25 : IDay
 {
     private const string FileName = "Year2022/Day25/input.txt";
 
-    public Day25() => Console.Title = "Full of Hot Air";
+    public string Name => "Full of Hot Air";
 
     public async Task SolvePart1()
     {
