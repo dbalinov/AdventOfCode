@@ -10,7 +10,7 @@ internal class Day2 : IDay
     {
         var program = await File.ReadAllTextAsync(FileName);
 
-        var numbers = Parse(program);
+        var numbers = IntcodeComputer.Parse(program);
 
         var output = ExecuteIntProgram(numbers, 12, 2);
 
@@ -25,7 +25,7 @@ internal class Day2 : IDay
         {
             for (var verb = 0; verb <= 99; verb++)
             {
-                var numbers = Parse(program);
+                var numbers = IntcodeComputer.Parse(program);
 
                 var output = ExecuteIntProgram(numbers, noun, verb);
 
@@ -67,27 +67,27 @@ internal class Day2 : IDay
         return numbers[0];
     }
 
-    private static IList<int> Parse(ReadOnlySpan<char> line)
-    {
-        var numbers = new List<int>();
+    //private static IList<int> Parse(ReadOnlySpan<char> line)
+    //{
+    //    var numbers = new List<int>();
 
-        var number = 0;
-        foreach (var ch in line)
-        {
-            if (char.IsNumber(ch))
-            {
-                number *= 10;
-                number += ch - '0';
-            }
-            else
-            {
-                numbers.Add(number);
-                number = 0;
-            }
-        }
+    //    var number = 0;
+    //    foreach (var ch in line)
+    //    {
+    //        if (char.IsNumber(ch))
+    //        {
+    //            number *= 10;
+    //            number += ch - '0';
+    //        }
+    //        else
+    //        {
+    //            numbers.Add(number);
+    //            number = 0;
+    //        }
+    //    }
 
-        numbers.Add(number);
+    //    numbers.Add(number);
 
-        return numbers;
-    }
+    //    return numbers;
+    //}
 }
