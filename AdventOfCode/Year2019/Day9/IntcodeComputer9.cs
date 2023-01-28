@@ -45,6 +45,21 @@ public class IntcodeComputer9
                         ? i + 3
                         : (int)(relativeBase + _instructions[(int)i + 3]);
 
+            if (param1 > _instructions.Count)
+            {
+                ExtendMemory(param1 - _instructions.Count);
+            }
+
+            if (param2 > _instructions.Count)
+            {
+                ExtendMemory(param2 - _instructions.Count);
+            }
+
+            if (resultIndex > _instructions.Count)
+            {
+                ExtendMemory(resultIndex - _instructions.Count);
+            }
+
             switch (de)
             {
                 case 1: // add
@@ -92,6 +107,14 @@ public class IntcodeComputer9
         output.CompleteAdding();
     }
 
+    private void ExtendMemory(int count)
+    {
+        for (var i = 0; i < count; i++)
+        {
+            _instructions.Add(0L);
+        }
+    }
+
     private static (int a, int b, int c, int de) GetOpCode(long number)
     {
         var opCode = new int[5];
@@ -137,7 +160,6 @@ public class IntcodeComputer9
 
         numbers.Add(multiplier * number);
 
-        numbers.AddRange(Enumerable.Repeat(0L, 100000));
         return numbers;
     }
 }
