@@ -4,10 +4,40 @@ namespace AdventOfCode.Year2019.Day9;
 
 public class IntcodeComputer9
 {
-    private readonly IList<long> _instructions;
+    private readonly IDictionary<long, long> _memory = new Dictionary<long, long>();
 
     public IntcodeComputer9(IList<long> instructions)
-        => _instructions = instructions;
+    {
+        long index = 0;
+        foreach (var instruction in instructions)
+        {
+            Write(index, instruction);
+
+            index++;
+        }
+    }
+
+    private void Write(long key, long value)
+    {
+        if (_memory.ContainsKey(key))
+        {
+            _memory[key] = value;
+        }
+        else
+        {
+            _memory.Add(key, value);
+        }
+    }
+
+    private long Read(long key)
+    {
+        if (!_memory.ContainsKey(key))
+        {
+            _memory.Add(key, 0);
+        }
+
+        return _memory[key];
+    }
 
     public static IntcodeComputer9 FromCode(string code)
     {
@@ -23,77 +53,63 @@ public class IntcodeComputer9
     {
         var relativeBase = 0L;
 
-        for (var i = 0; i < _instructions.Count;)
+        long i = 0;
+        for (;;)
         {
-            var (a, b, c, de) = GetOpCode(_instructions[(int)i]);
+            var (a, b, c, de) = GetOpCode(Read(i));
 
             var param1 = (de is >= 1 and <= 9) && c == 0
-                    ? (int)_instructions[(int)i + 1]
+                    ? Read(i + 1)
                     : c == 1
                         ? i + 1
-                        : (int)(relativeBase + _instructions[(int)i + 1]);
+                        : relativeBase + Read(i + 1);
 
             var param2 = (de is 1 or 2 or >= 5 and <= 9) && b == 0
-                    ? (int)_instructions[(int)i + 2]
+                    ? Read(i + 2)
                     : b == 1
                         ? i + 2
-                        : (int)(relativeBase + _instructions[(int)i + 2]);
+                        : relativeBase + Read(i + 2);
 
             var resultIndex = (de is 1 or 2 or >= 5 and <= 9) && a == 0
-                    ? (int)_instructions[(int)i + 3]
+                    ? Read(i + 3)
                     : a == 1
                         ? i + 3
-                        : (int)(relativeBase + _instructions[(int)i + 3]);
-
-            if (param1 > _instructions.Count)
-            {
-                ExtendMemory(param1 - _instructions.Count);
-            }
-
-            if (param2 > _instructions.Count)
-            {
-                ExtendMemory(param2 - _instructions.Count);
-            }
-
-            if (resultIndex > _instructions.Count)
-            {
-                ExtendMemory(resultIndex - _instructions.Count);
-            }
+                        : relativeBase + Read(i + 3);
 
             switch (de)
             {
                 case 1: // add
-                    _instructions[resultIndex] = _instructions[param1] + _instructions[param2];
+                    Write(resultIndex, Read(param1) + Read(param2));
                     i += 4;
                     break;
                 case 2: // multiply
-                    _instructions[resultIndex] = _instructions[param1] * _instructions[param2];
+                    Write(resultIndex, Read(param1) * Read(param2));
                     i += 4;
                     break;
                 case 3: // input
-                    _instructions[param1] = input.Take();
+                    Write(param1, input.Take());
                     i += 2;
                     break;
                 case 4: // output
-                    output.Add(_instructions[param1]);
+                    output.Add(Read(param1));
                     i += 2;
                     break;
                 case 5: // jump -if-true
-                    i = _instructions[param1] != 0 ? (int)_instructions[param2] : i + 3;
+                    i = Read(param1) != 0 ? Read(param2) : i + 3;
                     break;
                 case 6: // jump -if-false
-                    i = _instructions[param1] == 0 ? (int)_instructions[param2] : i + 3;
+                    i = Read(param1) == 0 ? Read(param2) : i + 3;
                     break;
                 case 7: // less then
-                    _instructions[resultIndex] = (_instructions[param1] < _instructions[param2]) ? 1 : 0;
+                    Write(resultIndex, Read(param1) < Read(param2) ? 1 : 0);
                     i += 4;
                     break;
                 case 8: // equals
-                    _instructions[resultIndex] = (_instructions[param1] == _instructions[param2]) ? 1 : 0;
+                    Write(resultIndex, Read(param1) == Read(param2) ? 1 : 0);
                     i += 4;
                     break;
                 case 9: // adjust relative base
-                    relativeBase += _instructions[param1];
+                    relativeBase += Read(param1);
                     i += 2;
                     break;
                 case 99:
@@ -102,16 +118,6 @@ public class IntcodeComputer9
                 default:
                     throw new NotImplementedException("Unknown opcode.");
             }
-        }
-
-        output.CompleteAdding();
-    }
-
-    private void ExtendMemory(int count)
-    {
-        for (var i = 0; i < count; i++)
-        {
-            _instructions.Add(0L);
         }
     }
 

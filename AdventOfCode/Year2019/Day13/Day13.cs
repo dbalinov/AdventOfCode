@@ -51,8 +51,6 @@ internal class Day13 : IDay
 
     private static Task PlayAsync(string code, IList<Tile> tiles)
     {
-        var score = 0;
-
         var instructions = IntcodeComputer9.Parse(code);
 
         // insert quarters
@@ -64,41 +62,19 @@ internal class Day13 : IDay
         var outputs = new BlockingCollection<long>();
         var computerTask = computer.RunAsync(inputs, outputs);
 
-        var scoreTask = Task.Run(() => GetScore(outputs, ref score));
-        var moveTask = Task.Run(() => Move(tiles, inputs, ref score));
+        var moveTask = Task.Run(() => Play(tiles, inputs, outputs));
 
-        return Task.WhenAll(computerTask, scoreTask, moveTask);
+        return Task.WhenAll(computerTask, moveTask);
     }
 
-
-
-    private static void Move(IList<Tile> tiles, BlockingCollection<long> inputs, ref int score)
+    private static void Play(IList<Tile> tiles, BlockingCollection<long> inputs, BlockingCollection<long> outputs)
     {
         var ball = tiles.First(x => x.TileId == TileId.Ball);
         var paddle = tiles.First(x => x.TileId == TileId.HorizontalPaddle);
+        var score = 0;
+        PrintTiles(tiles);
+        PrintScore(score);
 
-        PrintTiles(tiles, score);
-
-        while (true)
-        {
-            // Move ball
-            DrawTile(ball.X, ball.Y, TileId.Empty);
-            ball.X += 1;
-            ball.Y += 1;
-            DrawTile(ball.X, ball.Y, ball.TileId);
-            
-            // Move horizontal paddle
-            var compare = paddle.X.CompareTo(ball.X);
-            inputs.Add(compare);
-
-            DrawTile(paddle.X, paddle.Y, TileId.Empty);
-            paddle.X -= compare;
-            DrawTile(paddle.X, paddle.Y, paddle.TileId);
-        }
-    }
-
-    private static void GetScore(BlockingCollection<long> outputs, ref int score)
-    {
         while (!outputs.IsCompleted)
         {
             try
@@ -110,6 +86,35 @@ internal class Day13 : IDay
                 if (x == -1 && y == 0)
                 {
                     score = value;
+                    PrintScore(score);
+                    continue;
+                }
+                
+                var tileId = (TileId) value;
+
+                var tile = tiles.FirstOrDefault(t => t.X == x && t.Y == y);
+                if (tile != null && tile.TileId != TileId.Ball && tile.TileId != TileId.HorizontalPaddle)
+                {
+                    tile.TileId = tileId;
+                    DrawTile(tile.X, tile.Y, tile.TileId);
+                }
+
+                if (tileId == TileId.HorizontalPaddle)
+                {
+                    DrawTile(paddle.X, paddle.Y, TileId.Empty);
+                    paddle.X = x;
+                    paddle.Y = y;
+                    DrawTile(paddle.X, paddle.Y, paddle.TileId);
+                }
+                else if (tileId == TileId.Ball)
+                {
+                    DrawTile(ball.X, ball.Y, TileId.Empty);
+                    ball.X = x;
+                    ball.Y = y;
+                    DrawTile(ball.X, ball.Y, ball.TileId);
+
+                    var compare = ball.X.CompareTo(paddle.X);
+                    inputs.Add(compare);
                 }
             }
             catch (InvalidOperationException)
@@ -119,13 +124,16 @@ internal class Day13 : IDay
         }
     }
 
-    private static void PrintTiles(IEnumerable<Tile> tiles, int score)
+    private static void PrintTiles(IEnumerable<Tile> tiles)
     {
         foreach (var tile in tiles)
         {
             DrawTile(tile.X, tile.Y, tile.TileId);
         }
+    }
 
+    private static void PrintScore(int score)
+    {
         Console.SetCursorPosition(0, 22);
         Console.WriteLine("Score: {0}", score);
     }
@@ -141,10 +149,12 @@ internal class Day13 : IDay
             TileId.Block => '#',
             TileId.HorizontalPaddle => '_',
             TileId.Ball => 'O',
-            _ => throw new ArgumentOutOfRangeException()
+            _ => throw new ArgumentOutOfRangeException(nameof(tile))
         };
 
         Console.Write(c);
+
+        Console.SetCursorPosition(x, y);
     }
 
     private static IList<Tile> GetTiles(BlockingCollection<long> outputs)
