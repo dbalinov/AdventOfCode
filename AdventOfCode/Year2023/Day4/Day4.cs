@@ -1,6 +1,4 @@
-﻿using System.Buffers;
-
-namespace AdventOfCode.Year2023.Day4;
+﻿namespace AdventOfCode.Year2023.Day4;
 
 /// <summary>
 /// Scratchcards
