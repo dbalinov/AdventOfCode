@@ -38,7 +38,6 @@ public class Day2 : IDay
     {
         var isIncreasing = true;
         var isDecreasing = true;
-        var hasGoodDelta = true;
         for (var i = 0; i < levels.Length - 1; i++)
         {
             if (levels[i] > levels[i + 1])
@@ -59,12 +58,11 @@ public class Day2 : IDay
             var diff = Math.Abs(levels[i] - levels[i + 1]);
             if (diff is < 1 or > 3)
             {
-                hasGoodDelta = false;
-                break;
+                return false;
             }
         }
 
-        var isSafe = (isIncreasing || isDecreasing) && hasGoodDelta;
+        var isSafe = isIncreasing || isDecreasing;
         return isSafe;
     }
 
